@@ -16,7 +16,6 @@ class HangpersonGame
   end
   
   def guess(letter)
-    
     raise ArgumentError if letter == nil
     raise ArgumentError if letter == ''
     raise ArgumentError unless letter =~ /[a-z]/i
@@ -30,26 +29,19 @@ class HangpersonGame
     else 
       @wrong_guesses += letter
     end
-    
-    return true
   end
   
   def word_with_guesses
     result = ''
-    
     @word.split('').each do |l| 
-      if @guesses.include? l
-        result += l
-      else
-        result += '-'
-      end
+      result += (@guesses.include? l) ? l : '-'
     end
     return result
   end
   
   def check_win_or_lose
   
-    guess_length = word_with_guesses().gsub(/[-]/, '').length
+    guess_length = word_with_guesses.gsub(/[-]/, '').length
     
     return :win if guess_length == @word.length
     return :lose if @wrong_guesses.length >= $LOSE

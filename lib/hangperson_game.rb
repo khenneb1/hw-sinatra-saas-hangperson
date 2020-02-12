@@ -14,6 +14,7 @@ class HangpersonGame
   end
   
   def guess(letter)
+    
     raise ArgumentError if letter == nil
     raise ArgumentError if letter == ''
     raise ArgumentError unless letter =~ /[a-z]/i

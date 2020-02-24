@@ -5,9 +5,8 @@ class HangpersonGame
 
   # Get a word from remote "random word" service
   
-  LOSE = 7
-  
   attr_accessor :word, :guesses, :wrong_guesses
+  LOSE = 7
 
   def initialize(word)
     @word = word
@@ -16,35 +15,27 @@ class HangpersonGame
   end
   
   def guess(letter)
-    raise ArgumentError if letter == nil || letter == '' || letter !~ /[A-Za-z]/
-    
+    raise ArgumentError if letter.nil? or letter.empty? or letter !~ /[A-Za-z]/
     letter.downcase!
-    
-    return false if (@wrong_guesses.include? letter) || (@guesses.include? letter)
+    return false if @wrong_guesses.include?(letter) or @guesses.include?(letter)
     
     if word.include? letter
       @guesses += letter
     else 
       @wrong_guesses += letter
     end
-    
     return true
   end
   
   def word_with_guesses
-    result = ''
-    @word.split('').each do |l| 
-      result += (@guesses.include? l) ? l : '-'
+    @word.gsub(/./) do |letter| 
+      @guesses.include?(letter) ? letter : '-'
     end
-    return result
   end
   
   def check_win_or_lose
-  
-    guess_length = word_with_guesses.gsub(/[-]/, '').length
-    
     return :lose if @wrong_guesses.length >= LOSE
-    return :win if guess_length == @word.length
+    return :win if word_with_guesses == @word
     return :play
   end
 
